@@ -1,0 +1,201 @@
+<!DOCTYPE html>
+<html lang="en">
+<!-- See  https://www.youtube.com/watch?v=ieAhBejHe2M -->
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Output Impedance Measurement and Calculator</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background: #f0f8ff;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            margin: 0;
+            flex-direction: column;
+            gap: 20px;
+        }
+
+        .title-main {
+            font-size: 2.5em;
+            font-weight: bold;
+            color: #0000ff;
+            text-align: center;
+        }
+
+        .container {
+            text-align: center;
+            background: white;
+            padding: 20px;
+            border: 2px solid #0000ff;
+            border-radius: 10px;
+            width: 80%;
+            max-width: 600px;
+        }
+
+        .title {
+            font-size: 2em;
+            font-weight: bold;
+            color: #0000ff;
+        }
+
+        .circuit-diagram {
+            margin: 20px 0;
+        }
+
+        .inputs {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+            align-items: center;
+        }
+
+        .input-group {
+            display: flex;
+            align-items: center;
+            gap: 5px;
+        }
+
+        .input-group label {
+            white-space: nowrap;
+        }
+
+        .input-group input {
+            width: 60px;
+            text-align: right;
+        }
+
+        .buttons {
+            margin: 10px 0;
+        }
+
+        .buttons button {
+            padding: 10px 20px;
+            margin: 0 5px;
+            font-size: 1em;
+            cursor: pointer;
+        }
+
+        .output {
+            font-size: 1.2em;
+            font-weight: bold;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="title-main">Output Impedance Measurement and Calculator</div>
+    <div class="container">
+        <div class="circuit-diagram">
+            <img src="circuit-diagram.png" width=500px alt="Circuit Diagram">
+        </div>
+        <div class="inputs">
+            <div class="input-group">
+                <label for="v_open">Open-circuit voltage V<sub>open</sub></label>
+                <input type="number" id="v_open" value="">
+                <span>volts</span>
+            </div>
+            <div class="input-group">
+                <label for="v_loaded">Loaded circuit voltage V<sub>loaded</sub></label>
+                <input type="number" id="v_loaded" value="">
+                <span>volts</span>
+            </div>
+            <div class="input-group">
+                <label for="rload">Load resistance R<sub>load</sub></label>
+                <input type="number" id="rload" value="50">
+                <span>Ω</span>
+            </div>
+        </div>
+        <div class="buttons">
+            <button onclick="resetValues1()">Reset</button>
+            <button onclick="calculateImpedance1()">Calculate</button>
+        </div>
+        <div class="output">
+            Output Impedance Z<sub>source</sub>: <span id="zsource"></span> Ω
+        </div>
+    </div>
+
+
+
+    <div class="container">
+        <div class="circuit-diagram">
+            <img src="circuit-diagram2.png" width=500px alt="Circuit Diagram">
+        </div>
+        <div class="inputs">
+            <div class="input-group">
+                <label for="v_loaded2_1">Loaded voltage V<sub>loaded1</sub></label>
+                <input type="number" id="v_loaded2_1" value="">
+                <span>volts</span>
+            </div>
+            <div class="input-group">
+                <label for="rload2_1">Load resistance R<sub>load1</sub></label>
+                <input type="number" id="rload2_1" value="50">
+                <span>Ω</span>
+            </div>
+            <div class="input-group">
+                <label for="v_loaded2_2">Loaded circuit voltage V<sub>loaded2</sub></label>
+                <input type="number" id="v_loaded2_2" value="">
+                <span>volts</span>
+            </div>
+            <div class="input-group">
+                <label for="rload2_2">Load resistance R<sub>load2</sub></label>
+                <input type="number" id="rload2_2" value="25">
+                <span>Ω</span>
+            </div>
+        </div>
+        <div class="buttons">
+            <button onclick="resetValues2()">Reset</button>
+            <button onclick="calculateImpedance2()">Calculate</button>
+        </div>
+        <div class="output">
+            Output Impedance Z<sub>source</sub>: <span id="zsource2"></span> Ω
+        </div>
+    </div>
+    <script>
+        function resetValues1() {
+            document.getElementById('v_open').value = 0;
+            document.getElementById('rload').value = 50;
+            document.getElementById('v_loaded').value = 0;
+            document.getElementById('zsource').innerText = "";
+        }
+
+        function calculateImpedance1() {
+            const v_open = parseFloat(document.getElementById('v_open').value);
+            const Rload = parseFloat(document.getElementById('rload').value);
+            const v_loaded = parseFloat(document.getElementById('v_loaded').value);
+
+            if (v_open && Rload && v_loaded) {
+                const Zsource = Rload * ((v_open / v_loaded) - 1);
+                document.getElementById('zsource').innerText = Zsource.toFixed(2);
+            } else {
+                alert("Please enter valid values for all inputs.");
+            }
+        }
+
+        function resetValues2() {
+            document.getElementById('v_open2_1').value = 0;
+            document.getElementById('v_open2_2').value = 0;
+            document.getElementById('rload2_1').value = 50;
+            document.getElementById('rload2_2').value = 25;
+            document.getElementById('zsource2').innerText = "";
+        }
+
+        function calculateImpedance2() {
+            const rload2_1 = parseFloat(document.getElementById('rload2_1').value);
+            const rload2_2 = parseFloat(document.getElementById('rload2_2').value);
+            const v_loaded2_1 = parseFloat(document.getElementById('v_loaded2_1').value);
+            const v_loaded2_2 = parseFloat(document.getElementById('v_loaded2_2').value);
+
+            if (rload2_1 && rload2_2 && v_loaded2_1 && v_loaded2_2) {
+                const Zsource = (rload2_1 - rload2_1 * (v_loaded2_1 / v_loaded2_2)) / (v_loaded2_1 / v_loaded2_2 - rload2_1 / rload2_2);
+                document.getElementById('zsource2').innerText = Zsource.toFixed(2);
+            } else {
+                alert("Please enter valid values for all inputs.");
+            }
+        }
+    </script>
+</body>
+
+</html>
